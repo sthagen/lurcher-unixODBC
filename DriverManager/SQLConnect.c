@@ -3004,6 +3004,23 @@ static void close_pooled_connection( CPOOLENT *ptr )
 
     __clean_stmt_from_dbc( conn );
     __clean_desc_from_dbc( conn );
+
+#ifdef HAVE_ICONV
+
+    if ( ptr -> connection.iconv_cd_ascii_to_uc != (iconv_t)(-1) )
+    {
+        iconv_close( ptr -> connection.iconv_cd_ascii_to_uc );
+        ptr -> connection.iconv_cd_ascii_to_uc = (iconv_t)(-1);
+    }
+
+    if ( ptr -> connection.iconv_cd_uc_to_ascii != (iconv_t)(-1))
+    {
+        iconv_close( ptr -> connection.iconv_cd_uc_to_ascii );
+        ptr -> connection.iconv_cd_uc_to_ascii = (iconv_t)(-1);
+    }
+
+#endif
+
 }
 
 /*
@@ -3068,13 +3085,20 @@ void pool_unreserve( CPOOLHEAD *pooh )
 
 static void copy_nts( SQLCHAR *dst, SQLCHAR *src, int *out_length, SQLSMALLINT length )
 {
-    if ( length < 0 )
+    if ( src == NULL ) 
     {
-        strcpy( dst, src );
+        dst[ 0 ] = '\0';
     }
-    else
+    else 
     {
-        memcpy( dst, src, length );
+        if ( length < 0 )
+        {
+            strcpy( dst, src );
+        }
+        else
+        {
+            memcpy( dst, src, length );
+        }
     }
     if ( out_length)
     {
@@ -3156,7 +3180,7 @@ int search_for_pool( DMHDBC connection,
            int retrying )
 {
     time_t current_time;
-    SQLUINTEGER dead;
+    SQLULEN dead;
     CPOOLHEAD *ptrh, *prevh, *match_head;
     CPOOLENT *ptre, *preve;
     int has_checked = 0;
@@ -3276,19 +3300,27 @@ disconnect_and_remove:
              */
             has_checked = 0;
 
+            /*
+             * A pointer to memory in which to return the current value of the attribute specified by Attribute. 
+             * For integer-type attributes, some drivers may only write the lower 32-bit or 16-bit of a buffer 
+             * and leave the higher-order bit unchanged. Therefore, applications should use a buffer of SQLULEN 
+             * and initialize the value to 0 before calling this function.
+             */
+            dead = 0;
+
             if ((CHECK_SQLGETCONNECTATTR(( &ptre -> connection )) &&
                     SQL_SUCCEEDED( ret = SQLGETCONNECTATTR(( &ptre -> connection ),
                         ptre -> connection.driver_dbc,
                         SQL_ATTR_CONNECTION_DEAD,
                         &dead,
-                        0,
+                        SQL_IS_INTEGER,
                         0 ))) ||
                 (CHECK_SQLGETCONNECTATTRW(( &ptre -> connection )) &&
                     SQL_SUCCEEDED( ret = SQLGETCONNECTATTRW(( &ptre -> connection ),
                         ptre -> connection.driver_dbc,
                         SQL_ATTR_CONNECTION_DEAD,
                         &dead,
-                        0,
+                        SQL_IS_INTEGER,
                         0 ))) ||
                 (CHECK_SQLGETCONNECTOPTION(( &ptre -> connection )) &&
                     SQL_SUCCEEDED( ret = SQLGETCONNECTOPTION(( &ptre -> connection ),
