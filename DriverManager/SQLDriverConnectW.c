@@ -1098,7 +1098,7 @@ retry:
         ret_from_connect = SQL_SUCCESS_WITH_INFO;
     }
 
-    if ( pooling_enabled  && !add_to_pool( connection, pooh ) )
+    if ( pooling_enabled && !add_to_pool( connection, pooh ) )
     {
         pool_unreserve( pooh );
     }

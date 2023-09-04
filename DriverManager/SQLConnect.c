@@ -3878,6 +3878,19 @@ void return_to_pool( DMHDBC connection )
         }
     }
 
+    if ( connection -> cl_handle ) 
+    {
+        /*
+         * slight hack to warn the cursor lib the connection is going away 
+         */
+
+        SQLSETCONNECTATTR( connection,
+                    connection -> driver_dbc,
+                    SQL_ATTR_RESET_CONNECTION,
+                    (SQLPOINTER)(intptr_t) 2,
+                    0 );
+    }
+
     /*
      * remove all information from the connection
      */
