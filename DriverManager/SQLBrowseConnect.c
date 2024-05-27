@@ -294,6 +294,8 @@ SQLRETURN SQLBrowseConnect(
      * are we at the start of a connection
      */
 
+    driver_name[ 0 ] = '\0';
+
     if ( connection -> state == STATE_C2 )
     {
         /*
