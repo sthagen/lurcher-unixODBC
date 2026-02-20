@@ -160,7 +160,7 @@ SQLRETURN SQLNativeSqlW(
 
         if ( sz_sql_str_in && cb_sql_str_in == SQL_NTS )
         {
-            s1 = malloc(( wide_strlen( sz_sql_str_in ) * 2 ) + 100 );
+            s1 = malloc(( wide_strlen( sz_sql_str_in ) * sizeof( SQLWCHAR ) ) + 100 );
         }
         else if ( sz_sql_str_in )
         {
@@ -331,7 +331,7 @@ SQLRETURN SQLNativeSqlW(
 
         if ( sz_sql_str && pcb_sql_str && *pcb_sql_str == SQL_NTS )
         {
-            s1 = malloc( wide_strlen( sz_sql_str ) * 2 + 100 );
+            s1 = malloc( wide_strlen( sz_sql_str ) * sizeof( SQLWCHAR ) + 100 );
         }
         else if ( sz_sql_str &&  pcb_sql_str )
         {
@@ -339,7 +339,7 @@ SQLRETURN SQLNativeSqlW(
         }
         else if ( sz_sql_str )
         {
-            s1 = malloc( wide_strlen( sz_sql_str ) * 2 + 100 );
+            s1 = malloc( wide_strlen( sz_sql_str ) * sizeof( SQLWCHAR ) + 100 );
         }
         else
         {

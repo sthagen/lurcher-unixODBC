@@ -241,7 +241,7 @@ static SQLRETURN extract_sql_error_rec_w( EHEAD *head,
             }
             else
             {
-                memcpy( message_text, ptr -> msg, buffer_length * 2 );
+                memcpy( message_text, ptr -> msg, buffer_length * sizeof( SQLWCHAR ) );
                 message_text[ buffer_length - 1 ] = '\0';
             }
         }
@@ -380,7 +380,7 @@ static SQLRETURN extract_sql_error_rec_w( EHEAD *head,
                 }
                 else
                 {
-                    memcpy( message_text, ptr -> msg, buffer_length * 2 );
+                    memcpy( message_text, ptr -> msg, buffer_length * sizeof( SQLWCHAR ) );
                     message_text[ buffer_length - 1 ] = '\0';
                 }
             }

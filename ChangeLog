@@ -1,6 +1,7 @@
 2.3.15pre
 
-    *
+    * Fix some issues with 32 bit SQLWCHAR
+    * Add debug option to odbcinst.ini IgnoreWide to make the DM ignore the W functions
 
 7-Oct-20205
 2.3.14

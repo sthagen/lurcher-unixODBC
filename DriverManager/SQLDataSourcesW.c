@@ -266,7 +266,7 @@ SQLRETURN SQLDataSourcesW( SQLHENV environment_handle,
             {
                 if ( buffer_length1 <= strlen( object ))
                 {
-                    memcpy( server_name, s1, buffer_length1 * 2 );
+                    memcpy( server_name, s1, buffer_length1 * sizeof( SQLWCHAR ));
                     server_name[ buffer_length1 - 1 ] = 0;
                 }
                 else
@@ -288,7 +288,7 @@ SQLRETURN SQLDataSourcesW( SQLHENV environment_handle,
             {
                 if ( buffer_length2 <= strlen( property ))
                 {
-                    memcpy( description, s1, buffer_length2 * 2 );
+                    memcpy( description, s1, buffer_length2 * sizeof( SQLWCHAR ));
                     description[ buffer_length2 - 1 ] = 0;
                 }
                 else

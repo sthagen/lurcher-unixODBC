@@ -154,15 +154,15 @@ SQLRETURN SQLExecDirectW( SQLHSTMT statement_handle,
 
         if ( statement_text && text_length == SQL_NTS )
         {
-             s1 = malloc( wide_strlen( statement_text ) * 2 + LOG_MESSAGE_LEN * 2 );
+             s1 = malloc( wide_strlen( statement_text ) * sizeof( SQLWCHAR ) + LOG_MESSAGE_LEN * sizeof( SQLWCHAR ) );
         }
         else if ( statement_text )
         {
-            s1 = malloc( text_length + LOG_MESSAGE_LEN * 2 );
+            s1 = malloc( text_length + LOG_MESSAGE_LEN * sizeof( SQLWCHAR ) );
         }
         else
         {
-            s1 = malloc( LOG_MESSAGE_LEN * 2 );
+            s1 = malloc( LOG_MESSAGE_LEN * sizeof( SQLWCHAR ) );
         }
 
         sprintf( statement -> msg, "\n\t\tEntry:\

@@ -966,6 +966,8 @@ int __connect_part_one( DMHDBC connection, char *driver_lib, char *driver_name, 
     char *err;
     struct env_lib_struct *env_lib_list, *env_lib_prev;
     char txt[ 531 ];
+    int fignore_wide;
+    char ignore_wide[ 128 ];
 
     /*
      * check to see if we want to alter the default threading level
@@ -1104,6 +1106,20 @@ int __connect_part_one( DMHDBC connection, char *driver_lib, char *driver_name, 
     if ( strlen( connection -> probe_sql ) != 0 ) {
         sprintf( txt, "\t\tCPProbe set to '%s'", connection -> probe_sql );
         dm_log_write_diag( txt );
+    }
+
+    SQLGetPrivateProfileString( driver_name, "IgnoreWide", "0",
+				ignore_wide, sizeof( ignore_wide ), 
+                "ODBCINST.INI" );
+
+
+    fignore_wide = 0;
+
+    if ( strlen( ignore_wide ) != 0 ) {
+        sprintf( txt, "\t\tIgnoreWide set to '%s'", ignore_wide );
+        dm_log_write_diag( txt );
+
+        fignore_wide = atoi( ignore_wide );
     }
 
     /*
@@ -1253,7 +1269,7 @@ int __connect_part_one( DMHDBC connection, char *driver_lib, char *driver_name, 
              * get ANSI version from driver
              */
 
-            if ( fake_unicode )
+            if ( fake_unicode && !fignore_wide )
             {
                 sprintf( name, "%sW", connection -> functions[ i ].name );
             }
@@ -1277,13 +1293,18 @@ int __connect_part_one( DMHDBC connection, char *driver_lib, char *driver_name, 
                     connection -> functions[ i ].func;
             }
 
-            /*
-             * get UNICODE version from driver
-             */
-
-            sprintf( name, "%sW", connection -> functions[ i ].name );
-            connection -> functions[ i ].funcW =
-                (SQLRETURN (*)()) lt_dlsym( connection -> dl_handle, name );
+            if ( !fignore_wide ) {
+                /*
+                 * get UNICODE version from driver
+                 */
+    
+                sprintf( name, "%sW", connection -> functions[ i ].name );
+                connection -> functions[ i ].funcW =
+                    (SQLRETURN (*)()) lt_dlsym( connection -> dl_handle, name );
+            }
+            else {
+                connection -> functions[ i ].funcW = NULL;
+            }
         }
         else
         {

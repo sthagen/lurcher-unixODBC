@@ -672,7 +672,7 @@ static SQLRETURN extract_sql_error_field_w( EHEAD *head,
                 else
                 {
                     ret = SQL_SUCCESS_WITH_INFO;
-                    memcpy( diag_info_ptr, str, ( buffer_length - 1 ) * 2 );
+                    memcpy( diag_info_ptr, str, ( buffer_length - 1 ) * sizeof( SQLWCHAR ) );
                     (( SQLWCHAR * ) diag_info_ptr )[ buffer_length - 1 ] = '\0';
                 }
             }
@@ -739,7 +739,7 @@ static SQLRETURN extract_sql_error_field_w( EHEAD *head,
                 else
                 {
                     ret = SQL_SUCCESS_WITH_INFO;
-                    memcpy( diag_info_ptr, str, ( buffer_length - 1 ) * 2 );
+                    memcpy( diag_info_ptr, str, ( buffer_length - 1 ) * sizeof( SQLWCHAR ) );
                     (( SQLWCHAR * ) diag_info_ptr )[ buffer_length - 1 ] = '\0';
                 }
 

@@ -497,7 +497,7 @@ retry:
 
                 if ( len_conn_str_in >= conn_str_out_max )
                 {
-                    memcpy( conn_str_out, conn_str_in, ( conn_str_out_max - 1 ) * 2 );
+                    memcpy( conn_str_out, conn_str_in, ( conn_str_out_max - 1 ) * sizeof( SQLWCHAR ));
                     conn_str_out[ conn_str_out_max - 1 ] = '\0';
                     if ( ptr_conn_str_out )
                     {
@@ -512,7 +512,7 @@ retry:
                 }
                 else
                 {
-                    memcpy( conn_str_out, conn_str_in, len_conn_str_in * 2 );
+                    memcpy( conn_str_out, conn_str_in, len_conn_str_in * sizeof( SQLWCHAR ));
                     conn_str_out[ len_conn_str_in ] = '\0';
                     if ( ptr_conn_str_out )
                     {

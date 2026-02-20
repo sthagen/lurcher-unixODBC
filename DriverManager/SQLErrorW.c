@@ -237,7 +237,7 @@ static SQLRETURN local_extract_sql_error_w( EHEAD *head,
         }
         else
         {
-            memcpy( message_text, err -> msg, buffer_length * 2 );
+            memcpy( message_text, err -> msg, buffer_length * sizeof( SQLWCHAR ));
             message_text[ buffer_length - 1 ] = 0;
         }
     }
