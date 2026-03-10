@@ -662,8 +662,13 @@ int unicode_setup( DMHDBC connection )
 
     if ( log_info.log_flag )
     {
+#ifdef HAVE_SNPRINTF
+        snprintf( connection -> msg, sizeof( connection -> msg ), "\t\tUNICODE Using encoding ASCII '%s' and UNICODE '%s'",
+                        ascii, unicode );
+#else
         sprintf( connection -> msg, "\t\tUNICODE Using encoding ASCII '%s' and UNICODE '%s'",
                         ascii, unicode );
+#endif
 
         dm_log_write_diag( connection -> msg );
     }
@@ -4554,8 +4559,13 @@ void extract_diag_error( int htype,
 
             if ( log_info.log_flag )
             {
+#ifdef HAVE_SNPRINTF
+                snprintf( connection -> msg, sizeof( connection -> msg), "\t\tDIAG [%s] %s",
+                        sqlstate, msg1 );
+#else
                 sprintf( connection -> msg, "\t\tDIAG [%s] %s",
                         sqlstate, msg1 );
+#endif
 
                 dm_log_write_diag( connection -> msg );
             }
@@ -4671,8 +4681,13 @@ void extract_sql_error( DRV_SQLHANDLE henv,
 
             if ( log_info.log_flag )
             {
+#ifdef HAVE_SNPRINTF
+                snprintf( connection -> msg, sizeof( connection -> msg ), "\t\tDIAG [%s] %s",
+                        sqlstate, msg1 );
+#else
                 sprintf( connection -> msg, "\t\tDIAG [%s] %s",
                         sqlstate, msg1 );
+#endif
 
                 dm_log_write_diag( connection -> msg );
             }
@@ -4928,8 +4943,13 @@ void extract_diag_error_w( int htype,
                 as1 = (SQLCHAR*) unicode_to_ansi_alloc( sqlstate, SQL_NTS, connection, NULL );
                 as2 = (SQLCHAR*) unicode_to_ansi_alloc( msg1, SQL_NTS, connection, NULL );
 
+#ifdef HAVE_SNPRINTF
+                snprintf( connection -> msg, sizeof( connection -> msg ), "\t\tDIAG [%s] %s",
+                        as1 ? as1 : (SQLCHAR*)"NULL", as2 ? as2 : (SQLCHAR*)"NULL" );
+#else
                 sprintf( connection -> msg, "\t\tDIAG [%s] %s",
                         as1 ? as1 : (SQLCHAR*)"NULL", as2 ? as2 : (SQLCHAR*)"NULL" );
+#endif
 
                 if( as1 ) free( as1 );
                 if( as2 ) free( as2 );
@@ -5040,8 +5060,13 @@ void extract_sql_error_w( DRV_SQLHANDLE henv,
                 as1 = (SQLCHAR*) unicode_to_ansi_alloc( sqlstate, SQL_NTS, connection, NULL );
                 as2 = (SQLCHAR*) unicode_to_ansi_alloc( msg1, SQL_NTS, connection, NULL );
 
+#ifdef HAVE_SNPRINTF
+                snprintf( connection -> msg, sizeof( connection -> msg ), "\t\tDIAG [%s] %s",
+                        as1 ? as1 : (SQLCHAR*)"NULL", as2 ? as2 : (SQLCHAR*)"NULL");
+#else
                 sprintf( connection -> msg, "\t\tDIAG [%s] %s",
                         as1 ? as1 : (SQLCHAR*)"NULL", as2 ? as2 : (SQLCHAR*)"NULL");
+#endif
 
                 if( as1 ) free( as1 );
                 if( as2 ) free( as2 );
@@ -5840,7 +5865,11 @@ void dm_log_write( char *function_name, int line, int type, int severity,
         }
         else
         {
+#ifdef HAVE_SNPRINTF
+            snprintf( file_name, sizeof( file_name ), "%s/%s", log_info.log_file_name, __get_pid((SQLCHAR*) str ));
+#else
             sprintf( file_name, "%s/%s", log_info.log_file_name, __get_pid((SQLCHAR*) str ));
+#endif
         }
         fp = uo_fopen( file_name, "a" );
 
@@ -5872,7 +5901,11 @@ void dm_log_write( char *function_name, int line, int type, int severity,
 
 			gettimeofday( &tv, tz );
 
+#ifdef HAVE_SNPRINTF
+			snprintf( tstamp_str, sizeof( tstamp_str ), "[%ld.%06ld]", tv.tv_sec, tv.tv_usec );
+#else
 			sprintf( tstamp_str, "[%ld.%06ld]", tv.tv_sec, tv.tv_usec );
+#endif
 		}
 #elif defined( HAVE_FTIME ) && defined( HAVE_SYS_TIMEB_H )
 		{
@@ -5880,14 +5913,22 @@ void dm_log_write( char *function_name, int line, int type, int severity,
 
 			ftime( &tp );
 
+#ifdef HAVE_SNPRINTF
+			snprintf( tstamp_str, sizeof( tstamp_str ), "[%ld.%03d]", tp.time, tp.millitm );
+#else
 			sprintf( tstamp_str, "[%ld.%03d]", tp.time, tp.millitm );
+#endif
 		}
 #elif defined( DHAVE_TIME ) && defined( HAVE_TIME_H ) 
 		{
 			time_t tv;
 
 			time( &tv );
+#ifdef HAVE_SNPRINTF
+			snprintf( tstamp_str, sizeof( tstamp_str ), "[%ld]", tv );
+#else
 			sprintf( tstamp_str, "[%ld]", tv );
+#endif
 		}
 #else
 		tstamp_str[ 0 ] = '\0';
@@ -5927,7 +5968,11 @@ void dm_log_write_diag( char *message )
         }
         else
         {
+#ifdef HAVE_SNPRINTF
+            snprintf( file_name, sizeof( file_name ), "%s/%s", log_info.log_file_name, __get_pid((SQLCHAR*) str ));
+#else
             sprintf( file_name, "%s/%s", log_info.log_file_name, __get_pid((SQLCHAR*) str ));
+#endif
         }
         fp = uo_fopen( file_name, "a" );
 
