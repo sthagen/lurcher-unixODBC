@@ -140,6 +140,7 @@ int check_target_type( int c_type, int connection_mode)
     }
 
 	switch( c_type ) {
+        case SQL_UNKNOWN_TYPE:      /* Not sure what this is doing here, but it seems Oracle sends it with its het services */
 		case SQL_C_CHAR:
 		case SQL_C_LONG:
 		case SQL_C_SHORT:
