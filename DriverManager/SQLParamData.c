@@ -309,7 +309,7 @@ SQLRETURN SQLParamData( SQLHSTMT statement_handle,
     }
     else if ( ret == SQL_PARAM_DATA_AVAILABLE  )
     {
-        statement -> state = STATE_S14;
+        statement -> state = STATE_S15;         /* this is not S14, as its possible to skip the SQLGetData and move onto the next parameter, so instead of a "Must Get", its a "Can Get" */
     }
 	else if ( ret == SQL_NO_DATA )
 	{

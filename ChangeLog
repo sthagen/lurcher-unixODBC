@@ -3,8 +3,9 @@
     * Fix some issues with 32 bit SQLWCHAR
     * Add debug option to odbcinst.ini IgnoreWide to make the DM ignore the W functions
     * Fix __info.c to avoid sprint buffer overflows
+    * Allow skipping SQLGetData when processing SQL_PARAM_OUTPUT_STREAM
 
-7-Oct-20205
+7-Oct-2025
 2.3.14
 
     * Fix bug in SQLDriverConnect with pooling
