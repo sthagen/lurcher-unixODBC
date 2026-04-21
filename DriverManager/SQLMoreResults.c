@@ -277,7 +277,7 @@ SQLRETURN SQLMoreResults( SQLHSTMT statement_handle )
     }
     else if ( ret == SQL_STILL_EXECUTING )
     {
-        statement -> interupted_func = SQL_API_SQLEXECUTE;
+        statement -> interupted_func = SQL_API_SQLMORERESULTS;
         if ( statement -> state != STATE_S11 &&
                 statement -> state != STATE_S12 )
             statement -> state = STATE_S11;
