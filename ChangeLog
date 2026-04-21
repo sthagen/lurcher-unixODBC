@@ -4,6 +4,7 @@
     * Add debug option to odbcinst.ini IgnoreWide to make the DM ignore the W functions
     * Fix __info.c to avoid sprint buffer overflows
     * Allow skipping SQLGetData when processing SQL_PARAM_OUTPUT_STREAM
+    * Fix resultant interupted_func when SQLMoreResults is called async
 
 7-Oct-2025
 2.3.14
