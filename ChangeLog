@@ -5,6 +5,7 @@
     * Fix __info.c to avoid sprint buffer overflows
     * Allow skipping SQLGetData when processing SQL_PARAM_OUTPUT_STREAM
     * Fix resultant interupted_func when SQLMoreResults is called async
+    * Handle uncommitted transactions in pooled disconnect
 
 7-Oct-2025
 2.3.14
