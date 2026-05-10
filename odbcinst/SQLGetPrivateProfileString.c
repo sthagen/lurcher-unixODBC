@@ -337,8 +337,6 @@ void __clear_ini_cache( void )
 	mutex_exit( &mutex_ini );
 }
 
-REGISTER_DESTRUCTOR(__clear_ini_cache)
-
 #else
 
 static int check_ini_cache( int *ret,

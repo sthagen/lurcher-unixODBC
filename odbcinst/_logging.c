@@ -207,10 +207,9 @@ void inst_logClose( void )
 
     local_mutex_entry();
 
-    if ( hODBCINSTLog )
+    if ( hODBCINSTLog ) {
         logClose( hODBCINSTLog );
+    }
 
     local_mutex_exit();
 }
-
-REGISTER_DESTRUCTOR(inst_logClose)
