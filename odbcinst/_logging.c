@@ -201,3 +201,15 @@ int inst_logClear( void )
     return ret;
 }
 
+PORTABLE_DESTRUCTOR
+void inst_logClose( void )
+{
+
+    local_mutex_entry();
+
+    if ( hODBCINSTLog ) {
+        logClose( hODBCINSTLog );
+    }
+
+    local_mutex_exit();
+}

@@ -405,10 +405,10 @@ AC_CHECK_SIZEOF(long, 4)
 
 AC_MSG_CHECKING([if platform is 64 bit])
 if test "$ac_cv_sizeof_long" = "8"; then
-	AC_MSG_RESULT( Yes );
+	AC_MSG_RESULT( yes );
     AC_DEFINE([PLATFORM64],[],[Platform is 64 bit])
 else
-	AC_MSG_RESULT( No );
+	AC_MSG_RESULT( no );
 fi
 
 AC_CHECK_LONG_LONG
@@ -591,6 +591,20 @@ AC_CHECK_HEADERS(msql.h,[msql=true],
     ])
    done
 ])
+
+dnl see if we can declare a destructor
+AC_MSG_CHECKING([if __attribute__((destructor)) works])
+AC_COMPILE_IFELSE(
+    [AC_LANG_PROGRAM([__attribute__((destructor))], [int x = 0;])],
+    [
+        AC_MSG_RESULT( yes )
+        AC_DEFINE([PORTABLE_DESTRUCTOR],[__attribute__((destructor))],[Declare function as a destructor])
+    ],
+    [
+        AC_MSG_RESULT( no )
+        AC_DEFINE([PORTABLE_DESTRUCTOR],[],[Declare function as a destructor])
+    ]
+)
 
 dnl AC_SUBST(all_includes)
 dnl AC_SUBST(all_libraries)

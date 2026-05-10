@@ -211,7 +211,9 @@ SQLRETURN SQLCancel( SQLHSTMT statement_handle )
         if (ret == SQL_SUCCESS_WITH_INFO )
         {
             int result;
-            for (SQLSMALLINT recNo = 1; (result = IsDiagRec01S05(statement, recNo)) != NOT_A_DIAGRECORD; recNo++)
+            SQLSMALLINT recNo;
+
+            for ( recNo = 1; (result = IsDiagRec01S05(statement, recNo)) != NOT_A_DIAGRECORD; recNo++)
             {
                 if (IS_01S05 == result)
                 {
