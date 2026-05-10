@@ -553,6 +553,11 @@ DMHENV __alloc_env( void )
 
 int __validate_env_mark_released( DMHENV env )
 {
+#ifndef FAST_HANDLE_VALIDATE
+    DMHENV ptr;
+    int ret = 0;
+#endif
+
     if ( shared_environment && env == shared_environment ) {
         return 1;
     }
@@ -565,9 +570,6 @@ int __validate_env_mark_released( DMHENV env )
         return 0;
 
 #else
-
-    DMHENV ptr;
-    int ret = 0;
 
     local_mutex_entry( &mutex_lists );
 
@@ -594,6 +596,11 @@ int __validate_env_mark_released( DMHENV env )
 
 int __validate_env( DMHENV env )
 {
+#ifndef FAST_HANDLE_VALIDATE
+    DMHENV ptr;
+    int ret = 0;
+#endif
+
     if ( shared_environment && env == shared_environment ) {
         return 1;
     }
@@ -606,9 +613,6 @@ int __validate_env( DMHENV env )
         return 0;
 
 #else
-
-    DMHENV ptr;
-    int ret = 0;
 
     local_mutex_entry( &mutex_lists );
 
