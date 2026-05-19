@@ -444,6 +444,7 @@ SQLRETURN SQLGetInfoW( SQLHDBC connection_handle,
               case SQL_OUTER_JOINS:
                 if ( SQL_SUCCEEDED( ret ) && info_value && buffer_length > 0 )
                 {
+                    buffer_length = buffer_length / sizeof( SQLWCHAR );
                     as1 = malloc( buffer_length + 1 );
                 }
                 break;
